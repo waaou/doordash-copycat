@@ -44,7 +44,7 @@ jobs:
 
           HTTP_CODE_CALCULATE_FEE=$(curl -s -o /dev/null -w "%{http_code}" -X 'POST'  \
           http://localhost:8090/calculate-fee/   -H 'accept: application/json'   \
-          H 'Content-Type: application/json'   -d '{"distance_km": 10.5, "weight_kg": 2.0}')
+          -H 'Content-Type: application/json'   -d '{"distance_km": 10.5, "weight_kg": 2.0}')
 
           echo "HTTP_CODE_CALCULATE_FEE=$HTTP_CODE_CALCULATE_FEE"
 
