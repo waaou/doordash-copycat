@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-    steps:
       - name: Print greeting
         run: echo "👋 Hello from Jedha!"
 
@@ -22,7 +21,6 @@ jobs:
         run: |
           docker build -t my-app:${{ github.sha }} .
     
-    steps:
       - name: Start Docker container
         run: |
           docker run -d --name my-app-container my-app:${{ github.sha }}
