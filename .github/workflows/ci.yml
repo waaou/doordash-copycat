@@ -55,6 +55,16 @@ jobs:
             exit 1
           fi
 
+           HTTP_CODE_ESTIMATE_TIME=$(curl -s -o /dev/null -w "%{http_code}"  -X 'GET' 'http://localhost:8090/estimate-time/10.5'   -H 'accept: application/json')
+          echo "HTTP_CODE_ESTIMATE_TIME=$HTTP_CODE_ESTIMATE_TIME"
+
+          if [[ "$HTTP_CODE_ESTIMATE_TIME" =~ ^2[0-9][0-9]$ ]]; then
+            echo "le endpoint /estimate-time/ a répondu correctement (HTTP $HTTP_CODE_ESTIMATE_TIME)"
+          else
+            echo "Erreur : le endpoint /estimate-time/ a retourné un code HTTP inattendu (HTTP $HTTP_CODE_ESTIMATE_TIME)"
+            exit 1
+          fi
+
       - name: Stop Docker container
         run: |
           docker stop my-app-container
