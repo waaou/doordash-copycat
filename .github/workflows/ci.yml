@@ -31,8 +31,9 @@ jobs:
 
       - name: Test 8090 endpoint
         run: |
-          # HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)
-          HTTP_CODE=200
+          sleep 5
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)
+          #HTTP_CODE=200
   
           echo "HTTP response code: $HTTP_CODE "
           if [ "$HTTP_CODE" -eq 200 ]; then
