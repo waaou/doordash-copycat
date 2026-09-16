@@ -32,15 +32,29 @@ jobs:
 
       - name: Test all endpoints
         run: |
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090/status/)
+          HTTP_CODE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090/status/)
   
-          echo "HTTP response code: $HTTP_CODE "
-          if [ "$HTTP_CODE" -eq 200 ]; then
-            echo "Endpoint OK (HTTP $HTTP_CODE)"
+          echo "HTTP response code: $HTTP_CODE_STATUS"
+          if [ "$HTTP_CODE_STATUS" -eq 200 ]; then
+            echo "Endpoint OK (HTTP $HTTP_CODE_STATUS)"
           else
-            echo "Endpoint KO (HTTP $HTTP_CODE)"
+            echo "Endpoint KO (HTTP $HTTP_CODE_STATUS)"
             exit 1
           fi
+
+          HTTP_CODE_CALCULATE_FEE=$(curl -s -o /dev/null -w "%{http_code}" \
+          -X POST \
+          http://localhost:8090/calculate_fee/ \
+          -H "Content-Type: application/json" -d '{"distance_km": 10.5, "weight_kg": 2.0}')
+
+          echo "HTTP_CODE_CALCULATE_FEE=$HTTP_CODE_CALCULATE_FEE"
+
+          if [ "$HTTP_CODE_CALCULATE_FEE" != "200" ] && [ "$HTTP_CODE_CALCULATE_FEE" != "201" ]; then
+            echo "Erreur : le endpoint /calculate_fee/ a retourné $HTTP_CODE_CALCULATE_FEE"
+            exit 1
+          fi
+
+
       - name: Stop Docker container
         run: |
           docker stop my-app-container
