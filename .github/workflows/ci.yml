@@ -30,9 +30,9 @@ jobs:
           sleep 5
           docker ps -a | grep my-app-container
 
-      - name: Test 8090 endpoint
+      - name: Test all endpoints
         run: |
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090/health)
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090/status)
   
           echo "HTTP response code: $HTTP_CODE "
           if [ "$HTTP_CODE" -eq 200 ]; then
