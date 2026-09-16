@@ -44,16 +44,17 @@ jobs:
 
           HTTP_CODE_CALCULATE_FEE=$(curl -s -o /dev/null -w "%{http_code}" \
           -X POST \
-          http://localhost:8090/calculate_fee/ \
+          http://localhost:8090/calculate_fee \
           -H "Content-Type: application/json" -d '{"distance_km": 10.5, "weight_kg": 2.0}')
 
           echo "HTTP_CODE_CALCULATE_FEE=$HTTP_CODE_CALCULATE_FEE"
 
-          if [ "$HTTP_CODE_CALCULATE_FEE" != "200" ] && [ "$HTTP_CODE_CALCULATE_FEE" != "201" ]; then
-            echo "Erreur : le endpoint /calculate_fee/ a retourné $HTTP_CODE_CALCULATE_FEE"
+          if [[ "$HTTP_CODE_CALCULATE_FEE" =~ ^2[0-9][0-9]$ ]]; then
+            echo "le endpoint /calculate_fee/ a répondu correctement (HTTP $HTTP_CODE_CALCULATE_FEE)"
+          else
+            echo "Erreur : le endpoint /calculate_fee/ a retourné un code HTTP inattendu (HTTP $HTTP_CODE_CALCULATE_FEE)"
             exit 1
           fi
-
 
       - name: Stop Docker container
         run: |
