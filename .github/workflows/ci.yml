@@ -1,0 +1,28 @@
+name: My Door Dash Workflow
+
+
+on:
+  push:           # every time you push new commits
+    branches:
+      - main
+  workflow_dispatch:  # and manually from the Actions tab
+
+jobs:
+  door-dash:          # name of the job
+    runs-on: ubuntu-latest   # GitHub provides an Ubuntu VM
+
+    steps:
+      - uses: actions/checkout@v4
+
+    steps:
+      - name: Print greeting
+        run: echo "👋 Hello from Jedha!"
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:${{ github.sha }} .
+    
+    steps:
+      - name: Start Docker container
+        run: |
+          docker run -d --name my-app-container my-app:${{ github.sha }}
