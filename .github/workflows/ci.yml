@@ -25,6 +25,10 @@ jobs:
         run: |
           docker run -d --name my-app-container -p 8090:8090 my-app:${{ github.sha }}
 
+      - name: State of Docker container
+        run: |
+          docker ps -a | grep my-app-container
+
       - name: Test 8090 endpoint
         run: |
           # HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)
