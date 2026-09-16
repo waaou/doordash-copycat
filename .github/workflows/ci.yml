@@ -23,12 +23,13 @@ jobs:
     
       - name: Start Docker container
         run: |
-          docker run -d --name my-app-container my-app:${{ github.sha }}
+          docker run -d --name my-app-container -p 8090:8090 my-app:${{ github.sha }}
 
       - name: Test 8090 endpoint
         run: |
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)
-          
+  
+          echo "HTTP response code: $HTTP_CODE "
           if [ "$HTTP_CODE" -eq 200 ]; then
             echo "Endpoint OK (HTTP $HTTP_CODE)"
           else
